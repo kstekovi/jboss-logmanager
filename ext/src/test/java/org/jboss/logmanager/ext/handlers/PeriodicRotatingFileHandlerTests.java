@@ -110,8 +110,6 @@ public class PeriodicRotatingFileHandlerTests extends AbstractHandlerTest {
         final Calendar cal = Calendar.getInstance();
         final Path rotatedFile = BASE_LOG_DIR.toPath().resolve(FILENAME + rotateFormatter.format(cal.getTime()));
         final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        final int currentDay = cal.get(Calendar.DAY_OF_MONTH);
-        final int nextDay = currentDay + 1;
         // Set to false for this specific test
         handler.setAppend(false);
         handler.setErrorManager(AssertingErrorManager.of(ErrorManager.GENERIC_FAILURE));
@@ -131,7 +129,7 @@ public class PeriodicRotatingFileHandlerTests extends AbstractHandlerTest {
 
         // Create a new record, increment the day by one. The file should fail rotating, but the contents of the
         // log file should contain the new data
-        cal.add(Calendar.DAY_OF_MONTH, nextDay);
+        cal.add(Calendar.DAY_OF_MONTH, 1);
         final String nextDate = sdf.format(cal.getTime());
         record = createLogRecord(Level.INFO, "Date: %s", nextDate);
         record.setMillis(cal.getTimeInMillis());
